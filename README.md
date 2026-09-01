@@ -163,6 +163,25 @@ judge_provider:      {name: openai,    model: gpt-4.1, base_url: https://...}  #
 # provider: {name: ollama, model: llama3.1}
 ```
 
+### Run it free, fully local
+
+Point every role at a local OpenAI-compatible server (LM Studio, Ollama, vLLM) and
+optimize at zero API cost. The `*.lmstudio.yaml` example configs do exactly this and
+are **verified live** against `gemma-4-31b-it-mlx`:
+
+| Example | Task | Baseline → Best |
+| ------- | ---- | --------------- |
+| `invoice-extractor/config.lmstudio.yaml` | JSON extraction | **0.559 → 1.000** (+44 pts) |
+| `ticket-classifier/config.lmstudio.yaml` | classification  | **0.151 → 1.000** (+85 pts) |
+
+```bash
+skill-factory optimize -c examples/ticket-classifier/config.lmstudio.yaml
+```
+
+In both cases a single validation-gated reflective edit rewrote a vague seed into a
+structured skill (explicit schema, output-format constraints, normalization rules),
+and the loop correctly rejected later edits that couldn't beat a perfect score.
+
 ---
 
 ## Optional web UI

@@ -17,7 +17,9 @@ _EXAMPLES = Path(__file__).resolve().parents[1] / "examples"
 _CONFIGS = [
     _EXAMPLES / "invoice-extractor" / "config.yaml",
     _EXAMPLES / "invoice-extractor" / "config.fast.yaml",
+    _EXAMPLES / "invoice-extractor" / "config.lmstudio.yaml",
     _EXAMPLES / "ticket-classifier" / "config.yaml",
+    _EXAMPLES / "ticket-classifier" / "config.lmstudio.yaml",
 ]
 
 

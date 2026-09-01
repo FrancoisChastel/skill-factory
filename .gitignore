@@ -25,4 +25,5 @@ outputs/
 gepa_logs/
 runs/
 dist/
+dist-local/
 *.best_skill.md

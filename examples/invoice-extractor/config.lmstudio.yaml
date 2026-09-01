@@ -1,0 +1,47 @@
+# Local, zero-cost run against an LM Studio server (OpenAI-compatible).
+# Verified live: baseline 0.559 -> 1.000 with gemma-4-31b-it-mlx.
+#   skill-factory optimize -c examples/invoice-extractor/config.lmstudio.yaml
+
+skill: seed_skill.md
+dataset: dataset.jsonl
+val_fraction: 0.34
+seed: 7
+
+provider:            {name: lmstudio, model: gemma-4-31b-it-mlx}
+optimizer_provider:  {name: lmstudio, model: gemma-4-31b-it-mlx}
+judge_provider:      {name: lmstudio, model: gemma-4-31b-it-mlx}
+
+optimizer:
+  name: llm_loop
+  rounds: 3
+  minibatch_size: 3
+  max_edits_per_round: 1
+  patience: 2
+  goal: >
+    Make the skill output ONLY a JSON object (no markdown, no code fences, no prose)
+    with keys vendor, date (ISO 8601 YYYY-MM-DD), total (number), currency (ISO 4217),
+    correctly normalizing localized dates, decimal separators, and currency symbols.
+
+metric:
+  golden:
+    mode: json_equal
+    weight: 2.0
+  programmatic:
+    weight: 1.0
+    checks:
+      - is_valid_json
+      - {json_has_keys: [vendor, date, total, currency]}
+  judge:
+    weight: 1.0
+    criteria:
+      - {name: correctness, description: "Are vendor, date, total, currency all correct and normalized?", weight: 3}
+      - {name: format, description: "Strictly one JSON object, no prose or code fences?", weight: 2}
+
+harness:
+  temperature: 0.0
+  max_tokens: 512
+  max_workers: 1
+
+output:
+  dir: runs/invoice-local
+  emit_skill_dir: dist-local
