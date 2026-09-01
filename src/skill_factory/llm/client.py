@@ -100,6 +100,10 @@ class AnthropicClient:
         self.max_retries = max_retries
         self.retry_base_delay = retry_base_delay
         self._client = Anthropic(api_key=api_key) if api_key else Anthropic()
+        # `temperature` was a top-level Messages param in older SDKs but was
+        # removed in anthropic>=1.x (sampling moved to output_config.effort).
+        # Detect support so we stay compatible across SDK generations.
+        self._supports_temperature = _create_supports(self._client, "temperature")
 
     def generate(
         self,
@@ -117,21 +121,26 @@ class AnthropicClient:
                 kwargs: dict[str, object] = {
                     "model": self.model,
                     "max_tokens": max_tokens,
-                    "temperature": temperature,
                     "messages": [{"role": "user", "content": prompt}],
                 }
+                if self._supports_temperature:
+                    kwargs["temperature"] = temperature
                 if system:
                     kwargs["system"] = system
                 response = self._client.messages.create(**kwargs)
                 return _first_text_block(response)
-            except (anthropic.APIStatusError, anthropic.APIConnectionError) as exc:
+            except anthropic.APIStatusError as exc:
+                last_exc = exc
+                # Don't waste retries on non-retryable client errors (400/401/403/404).
+                if not _is_retryable_status(exc) or attempt == self.max_retries - 1:
+                    break
+                time.sleep(self.retry_base_delay * (2**attempt))
+            except anthropic.APIConnectionError as exc:
                 last_exc = exc
                 if attempt == self.max_retries - 1:
                     break
                 time.sleep(self.retry_base_delay * (2**attempt))
-        raise RuntimeError(
-            f"Anthropic request failed after {self.max_retries} attempts: {last_exc}"
-        ) from last_exc
+        raise RuntimeError(f"Anthropic request failed: {last_exc}") from last_exc
 
 
 def _first_text_block(response: object) -> str:
@@ -139,3 +148,25 @@ def _first_text_block(response: object) -> str:
     content = getattr(response, "content", None) or []
     parts = [getattr(block, "text", "") for block in content if getattr(block, "type", "") == "text"]
     return "".join(parts).strip()
+
+
+def _is_retryable_status(exc: object) -> bool:
+    """Retry only on rate limits (429) and server errors (5xx); fail fast on 4xx."""
+    status = getattr(exc, "status_code", None)
+    if status is None:
+        return True
+    return status == 429 or status >= 500
+
+
+def _create_supports(client: object, param: str) -> bool:
+    """True if ``messages.create`` accepts ``param`` (or arbitrary **kwargs)."""
+    import inspect
+
+    try:
+        sig = inspect.signature(client.messages.create)  # type: ignore[attr-defined]
+    except (TypeError, ValueError, AttributeError):
+        return True  # can't introspect — assume supported and let the API decide
+    for p in sig.parameters.values():
+        if p.kind is inspect.Parameter.VAR_KEYWORD:
+            return True
+    return param in sig.parameters

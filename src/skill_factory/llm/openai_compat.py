@@ -75,11 +75,16 @@ class OpenAICompatibleClient:
                     extra_body=self._extra_body or None,
                 )
                 return (response.choices[0].message.content or "").strip()
-            except (APIStatusError, APIConnectionError) as exc:
+            except APIStatusError as exc:
+                last_exc = exc
+                status = getattr(exc, "status_code", None)
+                retryable = status is None or status == 429 or status >= 500
+                if not retryable or attempt == self.max_retries - 1:
+                    break
+                time.sleep(self.retry_base_delay * (2**attempt))
+            except APIConnectionError as exc:
                 last_exc = exc
                 if attempt == self.max_retries - 1:
                     break
                 time.sleep(self.retry_base_delay * (2**attempt))
-        raise RuntimeError(
-            f"OpenAI-compatible request failed after {self.max_retries} attempts: {last_exc}"
-        ) from last_exc
+        raise RuntimeError(f"OpenAI-compatible request failed: {last_exc}") from last_exc
