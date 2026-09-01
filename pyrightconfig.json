@@ -1,0 +1,8 @@
+{
+  "include": ["src", "tests"],
+  "extraPaths": ["src"],
+  "venvPath": ".",
+  "venv": ".venv",
+  "reportMissingImports": "warning",
+  "pythonVersion": "3.10"
+}

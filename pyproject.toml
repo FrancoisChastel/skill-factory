@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "skill-factory"
+version = "0.1.0"
+description = "Scientifically optimize portable agent skills (SKILL.md) across harnesses using pluggable optimizers (custom loop, DSPy/GEPA, Microsoft SkillOpt)."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "François Chastel", email = "francois@chastel.co" }]
+keywords = ["llm", "agent", "skills", "prompt-optimization", "dspy", "gepa", "skillopt"]
+dependencies = [
+  "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+# Real Claude backend for the default harness / judge / optimizer LLM.
+anthropic = ["anthropic>=0.40"]
+# OpenAI-compatible backend (OpenAI, Azure, OpenRouter, vLLM, Ollama, LM Studio, ...).
+openai = ["openai>=1.40"]
+# DSPy GEPA optimizer adapter.
+dspy = ["dspy-ai>=2.6"]
+# Microsoft SkillOpt optimizer adapter.
+skillopt = ["skillopt>=0.1"]
+# Everything needed to run the default stack end-to-end.
+all = ["anthropic>=0.40", "openai>=1.40"]
+# Development + tests.
+dev = ["pytest>=8.0", "pytest-cov>=5.0"]
+
+[project.scripts]
+skill-factory = "skill_factory.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+skill_factory = ["ui/static/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.coverage.run]
+source = ["skill_factory"]
+branch = true

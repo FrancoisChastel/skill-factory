@@ -1,0 +1,64 @@
+# Skill Factory run config — invoice-extractor
+# Optimize a JSON-extraction skill with a composite metric (golden + programmatic + judge)
+# using the built-in reflective loop. Run with:
+#   skill-factory optimize -c examples/invoice-extractor/config.yaml
+
+skill: seed_skill.md
+dataset: dataset.jsonl
+val_fraction: 0.34
+seed: 7
+
+# The model that RUNS the skill (target harness).
+provider:
+  name: anthropic
+  model: claude-sonnet-5
+
+# The model that PROPOSES skill edits (reflection). A stronger model helps here.
+optimizer_provider:
+  name: anthropic
+  model: claude-opus-4-8
+
+# The model that JUDGES rollouts against the rubric.
+judge_provider:
+  name: anthropic
+  model: claude-sonnet-5
+
+optimizer:
+  name: llm_loop          # llm_loop | dspy_gepa | skillopt
+  rounds: 8
+  minibatch_size: 4
+  max_edits_per_round: 2  # propose 2 candidates/round, keep the best that passes the val gate
+  patience: 3
+  goal: >
+    Make the skill reliably output ONLY a JSON object with keys
+    vendor, date (ISO 8601 YYYY-MM-DD), total (number), and currency (ISO 4217),
+    correctly normalizing localized dates, decimal separators, and currency symbols.
+
+metric:
+  golden:
+    mode: json_equal
+    weight: 2.0
+  programmatic:
+    weight: 1.0
+    checks:
+      - is_valid_json
+      - {json_has_keys: [vendor, date, total, currency]}
+  judge:
+    weight: 1.0
+    criteria:
+      - name: correctness
+        description: Are vendor, date, total, currency all correct and properly normalized?
+        weight: 3
+      - name: format
+        description: Is the output strictly a single JSON object with no prose, markdown, or code fences?
+        weight: 2
+
+harness:
+  temperature: 0.0
+  max_tokens: 1024
+  max_workers: 4
+
+output:
+  dir: runs/invoice-extractor
+  emit_skill_dir: dist        # also emit an npx skills-compatible folder
+  as_collection: false

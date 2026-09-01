@@ -1,0 +1,59 @@
+# Skill Factory run config — ticket-classifier (single-label, non-JSON task)
+#   set -a; source .env; set +a
+#   skill-factory optimize -c examples/ticket-classifier/config.yaml
+
+skill: seed_skill.md
+dataset: dataset.jsonl
+val_fraction: 0.34
+seed: 3
+
+provider:                       # weaker target => headroom for the optimizer to close
+  name: anthropic
+  model: claude-haiku-4-5-20251001
+
+optimizer_provider:
+  name: anthropic
+  model: claude-sonnet-5
+
+judge_provider:
+  name: anthropic
+  model: claude-sonnet-5
+
+optimizer:
+  name: llm_loop
+  rounds: 4
+  minibatch_size: 3
+  max_edits_per_round: 1
+  patience: 2
+  goal: >
+    Make the skill output EXACTLY ONE lowercase category label and nothing else,
+    chosen from: billing, bug, feature_request, account, other. No punctuation,
+    no explanation, no quotes. Teach the boundaries between categories (e.g.
+    login/2FA/email-change = account; charges/invoices/plan limits = billing).
+
+metric:
+  golden:                       # label must match the gold label
+    mode: normalized
+    weight: 2.0
+  programmatic:                 # output must be exactly one allowed label, no prose
+    weight: 1.0
+    checks:
+      - {matches_regex: "(?i)^\\s*(billing|bug|feature_request|account|other)\\s*$"}
+  judge:
+    weight: 1.0
+    criteria:
+      - name: correctness
+        description: Is the chosen category the best fit for the message?
+        weight: 3
+      - name: format
+        description: Is the output a single bare label with no extra text?
+        weight: 2
+
+harness:
+  temperature: 0.0
+  max_tokens: 64
+  max_workers: 4
+
+output:
+  dir: runs/ticket-classifier
+  emit_skill_dir: dist

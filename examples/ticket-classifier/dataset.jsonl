@@ -1,0 +1,15 @@
+{"id": "tk-01", "input": "I was charged twice for my subscription this month. Can you refund the duplicate?", "expected": "billing"}
+{"id": "tk-02", "input": "The export button throws a 500 error every time I click it on the reports page.", "expected": "bug"}
+{"id": "tk-03", "input": "It would be great if you could add a dark mode to the dashboard.", "expected": "feature_request"}
+{"id": "tk-04", "input": "I can't log in — it says my password is wrong but I just reset it.", "expected": "account"}
+{"id": "tk-05", "input": "Do you ship to Canada? Just wondering before I sign up.", "expected": "other"}
+{"id": "tk-06", "input": "My invoice shows the wrong VAT amount and the total is off by 20%.", "expected": "billing"}
+{"id": "tk-07", "input": "The mobile app crashes on startup after the latest update on Android 14.", "expected": "bug"}
+{"id": "tk-08", "input": "Please add support for exporting to CSV, not just PDF.", "expected": "feature_request"}
+{"id": "tk-09", "input": "How do I change the email address associated with my account?", "expected": "account"}
+{"id": "tk-10", "input": "Your product is amazing, just wanted to say thanks to the team!", "expected": "other"}
+{"id": "tk-11", "input": "I upgraded to the Pro plan but I'm still seeing the free tier limits.", "expected": "billing"}
+{"id": "tk-12", "input": "Two-factor authentication codes never arrive by SMS, so I'm locked out.", "expected": "account"}
+{"id": "tk-13", "input": "The date picker lets me select Feb 30th and then the page freezes.", "expected": "bug"}
+{"id": "tk-14", "input": "Any chance of a Slack integration for notifications down the road?", "expected": "feature_request"}
+{"id": "tk-15", "input": "What are your business hours for phone support?", "expected": "other"}
