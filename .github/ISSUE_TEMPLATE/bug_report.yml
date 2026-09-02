@@ -1,0 +1,35 @@
+name: Bug report
+description: Something isn't working as expected
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug, and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Ideally a minimal config + command. Redact any API keys.
+      placeholder: |
+        1. config.yaml: ...
+        2. skill-factory optimize -c config.yaml
+        3. ...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version / environment
+      description: skill-factory version, Python version, provider, and optimizer.
+      placeholder: "skill-factory 0.1.0, Python 3.12, provider=ollama, optimizer=llm_loop"
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / traceback
+      render: shell

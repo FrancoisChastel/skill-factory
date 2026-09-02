@@ -1,0 +1,21 @@
+{
+  "name": "skill-factory-video",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Remotion explainer video for Skill Factory",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render src/index.ts Explainer out/explainer.mp4 --codec=h264",
+    "still": "remotion still src/index.ts Explainer out/poster.png --frame=500"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.520",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "remotion": "4.0.520"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.18",
+    "typescript": "5.9.3"
+  }
+}
