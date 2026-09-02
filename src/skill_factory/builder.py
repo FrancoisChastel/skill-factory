@@ -10,6 +10,7 @@ from skill_factory.core.skill import Skill
 from skill_factory.core.task import Dataset
 from skill_factory.harness.anthropic_api import AnthropicHarness
 from skill_factory.harness.base import Harness
+from skill_factory.harness.subprocess_harness import ClaudeCodeHarness, SubprocessHarness
 from skill_factory.llm.client import LLMClient
 from skill_factory.llm.factory import make_client
 from skill_factory.metrics.base import Metric
@@ -26,12 +27,49 @@ def build_client(provider: ProviderConfig) -> LLMClient:
     )
 
 
-def build_harness(target_client: LLMClient, harness_cfg: dict[str, Any]) -> Harness:
-    return AnthropicHarness(
-        target_client,
-        temperature=float(harness_cfg.get("temperature", 0.0)),
-        max_tokens=int(harness_cfg.get("max_tokens", 2048)),
+def build_harness(harness_cfg: dict[str, Any], target_client: LLMClient | None = None) -> Harness:
+    """Build the harness named by ``harness_cfg['type']``.
+
+    Types:
+        api (default)  skill-as-system-prompt over an LLM client (needs a client)
+        claude_code    run rollouts through the Claude Code CLI (``claude -p``)
+        subprocess     run rollouts through any argv template (see SubprocessHarness)
+    """
+    harness_type = str(harness_cfg.get("type", "api"))
+    if harness_type == "api":
+        if target_client is None:
+            raise ValueError("harness type 'api' requires a target LLM client")
+        return AnthropicHarness(
+            target_client,
+            temperature=float(harness_cfg.get("temperature", 0.0)),
+            max_tokens=int(harness_cfg.get("max_tokens", 2048)),
+        )
+    if harness_type == "claude_code":
+        return ClaudeCodeHarness(
+            model=harness_cfg.get("model"),
+            executable=str(harness_cfg.get("executable", "claude")),
+            timeout=float(harness_cfg.get("timeout", 300.0)),
+            extra_args=list(harness_cfg.get("extra_args", [])),
+        )
+    if harness_type == "subprocess":
+        command = harness_cfg.get("command")
+        if not command:
+            raise ValueError("harness type 'subprocess' requires a 'command' argv list")
+        return SubprocessHarness(
+            [str(part) for part in command],
+            input_via=str(harness_cfg.get("input_via", "stdin")),
+            timeout=float(harness_cfg.get("timeout", 120.0)),
+            cwd=harness_cfg.get("cwd"),
+            env=harness_cfg.get("env"),
+        )
+    raise ValueError(
+        f"Unknown harness type {harness_type!r}. Supported: api, claude_code, subprocess"
     )
+
+
+def harness_needs_client(harness_cfg: dict[str, Any]) -> bool:
+    """True if this harness config requires a target LLM client to be built."""
+    return str(harness_cfg.get("type", "api")) == "api"
 
 
 def build_metric(metric_cfg: dict[str, Any], judge_client: LLMClient | None) -> Metric:
@@ -100,8 +138,10 @@ def run_optimization(config: RunConfig) -> OptimizationResult:
     dataset = Dataset.from_jsonl(config.dataset_path)
     trainset, valset = dataset.split(config.val_fraction, seed=config.seed)
 
-    target_client = build_client(config.target)
-    harness = build_harness(target_client, config.harness)
+    # CLI harnesses (claude_code/subprocess) run the skill themselves — only
+    # build a target client when the harness actually calls an LLM API.
+    target_client = build_client(config.target) if harness_needs_client(config.harness) else None
+    harness = build_harness(config.harness, target_client)
 
     judge_client = build_client(config.judge_provider) if "judge" in config.metric else None
     metric = build_metric(config.metric, judge_client)

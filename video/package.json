@@ -6,10 +6,12 @@
   "scripts": {
     "studio": "remotion studio",
     "render": "remotion render src/index.ts Explainer out/explainer.mp4 --codec=h264",
-    "still": "remotion still src/index.ts Explainer out/poster.png --frame=500"
+    "render:narrated": "remotion render src/index.ts ExplainerNarrated out/explainer-narrated.mp4 --codec=h264",
+    "still": "remotion still src/index.ts Explainer out/poster.png --frame=560"
   },
   "dependencies": {
     "@remotion/cli": "4.0.520",
+    "@remotion/transitions": "^4.0.520",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "remotion": "4.0.520"

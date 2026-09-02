@@ -87,7 +87,12 @@ def _cmd_optimize(args: argparse.Namespace) -> int:
 
 
 def _cmd_evaluate(args: argparse.Namespace) -> int:
-    from skill_factory.builder import build_client, build_harness, build_metric
+    from skill_factory.builder import (
+        build_client,
+        build_harness,
+        build_metric,
+        harness_needs_client,
+    )
     from skill_factory.config import load_config
     from skill_factory.core.skill import Skill
     from skill_factory.core.task import Dataset
@@ -97,8 +102,8 @@ def _cmd_evaluate(args: argparse.Namespace) -> int:
     skill = Skill.load(args.skill) if args.skill else Skill.load(config.skill_path)
     dataset = Dataset.from_jsonl(config.dataset_path)
 
-    target_client = build_client(config.target)
-    harness = build_harness(target_client, config.harness)
+    target_client = build_client(config.target) if harness_needs_client(config.harness) else None
+    harness = build_harness(config.harness, target_client)
     judge_client = build_client(config.judge_provider) if "judge" in config.metric else None
     metric = build_metric(config.metric, judge_client)
 

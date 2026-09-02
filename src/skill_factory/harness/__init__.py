@@ -9,5 +9,12 @@ Code / Codex CLIs so skills are optimized in the same environment they deploy to
 from skill_factory.harness.base import Harness
 from skill_factory.harness.anthropic_api import AnthropicHarness
 from skill_factory.harness.callable_harness import CallableHarness
+from skill_factory.harness.subprocess_harness import ClaudeCodeHarness, SubprocessHarness
 
-__all__ = ["Harness", "AnthropicHarness", "CallableHarness"]
+__all__ = [
+    "Harness",
+    "AnthropicHarness",
+    "CallableHarness",
+    "SubprocessHarness",
+    "ClaudeCodeHarness",
+]

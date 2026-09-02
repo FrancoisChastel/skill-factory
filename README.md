@@ -15,7 +15,7 @@ optimizer *measurably* improve the skill against held-out data.
 
 <img src="docs/media/skill-factory-demo.gif" alt="Skill Factory explainer" width="760" />
 
-<sub>▶ Full 45s explainer video is attached to every <a href="https://github.com/FrancoisChastel/skill-factory/releases">release</a>.</sub>
+<sub>▶ Full explainer video (61s — silent and narrated cuts) is attached to every <a href="https://github.com/FrancoisChastel/skill-factory/releases">release</a>.</sub>
 
 </div>
 
@@ -68,12 +68,17 @@ scored low to decide how to edit the skill.
 ## Install
 
 ```bash
-python -m venv .venv && source .venv/bin/activate
-pip install -e ".[anthropic]"     # default Claude backend
+pip install "skill-factory[anthropic]"    # from PyPI (published with each release)
+pipx install skill-factory                # or: CLI-only, isolated
+
+# from source:
+git clone https://github.com/FrancoisChastel/skill-factory && cd skill-factory
+pip install -e ".[anthropic]"
 # extras: [openai] [dspy] [skillopt] [dev]  ·  or [all]
 ```
 
-Copy `.env.example` → `.env` and add your key(s).
+Copy `.env.example` → `.env` and add your key(s) — or skip keys entirely and run
+against a local model (see [fully local](#run-it-free-fully-local)).
 
 ## Quickstart
 
@@ -96,7 +101,8 @@ structured skill (schema, strict output format, normalization rules):
 | `invoice-extractor` | JSON extraction | **0.559 → 1.000** (+44 pts) |
 | `ticket-classifier` | classification  | **0.151 → 1.000** (+85 pts) |
 
-Reproduce with `examples/*/config.lmstudio.yaml`.
+Reproduce with `examples/*/config.lmstudio.yaml`. The winning skills — with full
+candidate histories — live in the **[skill gallery](gallery/)**, ready to install.
 
 ## Metrics — combine all three
 
@@ -150,6 +156,31 @@ judge_provider:     {name: ollama,    model: llama3.1}           # judge (local,
 Point every role at a local OpenAI-compatible server (LM Studio, Ollama, vLLM)
 and optimize at zero cost — the `*.lmstudio.yaml` configs do exactly this.
 
+## Harnesses — optimize *in situ*
+
+The harness decides **where the skill runs** during optimization. Skills tuned in
+the same harness they deploy to transfer best:
+
+```yaml
+harness:
+  type: api             # default: skill-as-system-prompt over the provider API
+
+harness:
+  type: claude_code     # each rollout runs through the real Claude Code CLI
+  model: claude-haiku-4-5   # optional; timeout/executable/extra_args too
+
+harness:
+  type: subprocess      # any CLI — Codex, custom agents, eval scripts…
+  command: ["my-agent", "--system", "{skill_body}", "--input", "{input_file}"]
+  input_via: stdin      # or "arg" with {input}/{input_file} placeholders
+```
+
+`claude_code` executes `claude -p --append-system-prompt <skill> --output-format text`
+per rollout, piping the task input on stdin. The generic `subprocess` harness
+substitutes `{skill_body}`, `{skill_file}`, `{input}`, `{input_file}` into your
+argv template — non-zero exits, timeouts, and launch failures become failed
+rollouts (scored 0) instead of aborting the run.
+
 ## Optional web UI
 
 A zero-dependency dashboard (Python stdlib) to browse runs, score timelines, and
@@ -186,19 +217,24 @@ pytest              # fully offline: fake LLM + callable harness
 pytest --cov        # ~80% coverage
 ```
 
-Rebuild the explainer video (needs Node + ffmpeg):
+Rebuild the explainer video (needs Node + ffmpeg; narration uses macOS `say`):
 
 ```bash
 cd video && npm install
-npm run render      # → video/out/explainer.mp4
+npm run render            # silent cut      → video/out/explainer.mp4
+npm run render:narrated   # narrated cut    → video/out/explainer-narrated.mp4
 ```
 
 ## Roadmap
 
-- Transitions/crossfades and optional narration in the explainer
-- More harnesses (Claude Code / Codex CLI subprocess) so skills optimize *in situ*
-- PyPI publish + `pipx` install
-- A gallery of community-contributed skills + configs
+- [x] Transitions/crossfades + optional narration in the explainer
+- [x] More harnesses — Claude Code CLI preset + generic `subprocess` (skills optimize *in situ*)
+- [x] PyPI packaging + trusted-publishing release workflow (publishes on each GitHub release)
+- [x] A [gallery](gallery/) of optimized skills with reproducible numbers
+- [ ] Live-validate the DSPy GEPA adapter against a real run
+- [ ] Parallel candidate evaluation inside `llm_loop` rounds
+- [ ] Codex CLI harness preset (works today via `subprocess`)
+- [ ] More gallery entries — contributions welcome!
 
 ## Contributing
 
