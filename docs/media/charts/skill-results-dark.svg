@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="306" viewBox="0 0 880 306" role="img" aria-labelledby="t d" font-family='-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif'>
+<title id="t">Skill mode results</title>
+<desc id="d">Validation score before and after one reflective edit: invoice-extractor 0.559 to 1.000, ticket-classifier 0.151 to 1.000.</desc>
+<style>.num{font-variant-numeric:tabular-nums}</style>
+<rect x="0.5" y="0.5" width="879" height="305" rx="16" fill="#0d1117" stroke="#3d444d"/>
+<text x="40.0" y="50.0" font-size="11" fill="#9198a1" font-weight="600" text-anchor="start" letter-spacing="1.2">SKILL MODE · LOCAL GEMMA-4-31B, ZERO API COST</text>
+<text x="40.0" y="84.0" font-size="24" fill="#f0f6fc" font-weight="650" text-anchor="start">One validation-gated edit, two skills fixed</text>
+<text x="40.0" y="110.0" font-size="14" fill="#9198a1" font-weight="400" text-anchor="start">Validation score of the seed SKILL.md and of the optimized one.</text>
+<circle cx="594.0" cy="46.0" r="5" fill="#898781" stroke="#0d1117" stroke-width="2"/>
+<text x="604.0" y="50.0" font-size="12" fill="#9198a1" font-weight="400" text-anchor="start">seed</text>
+<circle cx="656.0" cy="46.0" r="5" fill="#3987e5" stroke="#0d1117" stroke-width="2"/>
+<text x="666.0" y="50.0" font-size="12" fill="#9198a1" font-weight="400" text-anchor="start">optimized</text>
+<line x1="250.0" x2="250.0" y1="146" y2="264" stroke="#1f242c"/>
+<text x="250.0" y="284.0" font-size="11" fill="#9198a1" font-weight="400" text-anchor="middle" class="num">0</text>
+<line x1="373.5" x2="373.5" y1="146" y2="264" stroke="#1f242c"/>
+<text x="373.5" y="284.0" font-size="11" fill="#9198a1" font-weight="400" text-anchor="middle" class="num">0.25</text>
+<line x1="497.0" x2="497.0" y1="146" y2="264" stroke="#1f242c"/>
+<text x="497.0" y="284.0" font-size="11" fill="#9198a1" font-weight="400" text-anchor="middle" class="num">0.5</text>
+<line x1="620.5" x2="620.5" y1="146" y2="264" stroke="#1f242c"/>
+<text x="620.5" y="284.0" font-size="11" fill="#9198a1" font-weight="400" text-anchor="middle" class="num">0.75</text>
+<line x1="744.0" x2="744.0" y1="146" y2="264" stroke="#1f242c"/>
+<text x="744.0" y="284.0" font-size="11" fill="#9198a1" font-weight="400" text-anchor="middle" class="num">1</text>
+<text x="40.0" y="180.0" font-size="14" fill="#f0f6fc" font-weight="600" text-anchor="start">invoice-extractor</text>
+<text x="40.0" y="197.0" font-size="12" fill="#9198a1" font-weight="400" text-anchor="start">JSON extraction</text>
+<line x1="526.1" x2="744.0" y1="182" y2="182" stroke="#3987e5" stroke-opacity="0.35" stroke-width="4" stroke-linecap="round"/>
+<circle cx="526.1" cy="182.0" r="6" fill="#898781" stroke="#0d1117" stroke-width="2"/>
+<circle cx="744.0" cy="182.0" r="6.5" fill="#3987e5" stroke="#0d1117" stroke-width="2"/>
+<text x="526.1" y="168.0" font-size="12" fill="#9198a1" font-weight="400" text-anchor="middle" class="num">0.559</text>
+<text x="744.0" y="168.0" font-size="12" fill="#f0f6fc" font-weight="600" text-anchor="middle" class="num">1.000</text>
+<text x="840.0" y="187.0" font-size="15" fill="#f0f6fc" font-weight="650" text-anchor="end" class="num">+44 pts</text>
+<text x="40.0" y="234.0" font-size="14" fill="#f0f6fc" font-weight="600" text-anchor="start">ticket-classifier</text>
+<text x="40.0" y="251.0" font-size="12" fill="#9198a1" font-weight="400" text-anchor="start">classification</text>
+<line x1="324.6" x2="744.0" y1="236" y2="236" stroke="#3987e5" stroke-opacity="0.35" stroke-width="4" stroke-linecap="round"/>
+<circle cx="324.6" cy="236.0" r="6" fill="#898781" stroke="#0d1117" stroke-width="2"/>
+<circle cx="744.0" cy="236.0" r="6.5" fill="#3987e5" stroke="#0d1117" stroke-width="2"/>
+<text x="324.6" y="222.0" font-size="12" fill="#9198a1" font-weight="400" text-anchor="middle" class="num">0.151</text>
+<text x="744.0" y="222.0" font-size="12" fill="#f0f6fc" font-weight="600" text-anchor="middle" class="num">1.000</text>
+<text x="840.0" y="241.0" font-size="15" fill="#f0f6fc" font-weight="650" text-anchor="end" class="num">+85 pts</text>
+</svg>

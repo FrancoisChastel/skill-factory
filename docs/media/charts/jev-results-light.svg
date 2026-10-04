@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="590" viewBox="0 0 880 590" role="img" aria-labelledby="t d" font-family='-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif'>
+<title id="t">jev: 29% to 84% of malicious skills caught</title>
+<desc id="d">Recall against false-flag rate on validation. The released judge catches 29.0% at 1.28% false flags; the hand-shipped probe set 79.6% at 0.64%; a greedy union 87.1% at 1.50%, refused by the gate; skill-factory optimize 83.9% at 0.43%.</desc>
+<style>.num{font-variant-numeric:tabular-nums}</style>
+<rect x="0.5" y="0.5" width="879" height="589" rx="16" fill="#ffffff" stroke="#d1d9e0"/>
+<text x="40.0" y="50.0" font-size="11" fill="#59636e" font-weight="600" text-anchor="start" letter-spacing="1.2">CASE STUDY · JEV IN SKILL-SCANNER</text>
+<text x="40.0" y="84.0" font-size="24" fill="#1f2328" font-weight="650" text-anchor="start">Catching malicious agent skills: 29% → 84%</text>
+<text x="40.0" y="110.0" font-size="14" fill="#59636e" font-weight="400" text-anchor="start">Validation split of 1,666 real skills, rescored offline from 70,000 cached jev answers.</text>
+<rect x="40.0" y="136" width="257.3" height="98" rx="12" fill="#f6f8fa"/>
+<rect x="60.0" y="156" width="16" height="3" rx="1.5" fill="#2a78d6"/>
+<text x="60.0" y="192.0" font-size="30" fill="#1f2328" font-weight="650" text-anchor="start">2.9×</text>
+<text x="60.0" y="212.0" font-size="13" fill="#1f2328" font-weight="400" text-anchor="start">more malicious skills caught</text>
+<text x="60.0" y="227.0" font-size="12" fill="#59636e" font-weight="400" text-anchor="start" class="num">29.0% → 83.9% recall</text>
+<rect x="311.3" y="136" width="257.3" height="98" rx="12" fill="#f6f8fa"/>
+<rect x="331.3" y="156" width="16" height="3" rx="1.5" fill="#2a78d6"/>
+<text x="331.3" y="192.0" font-size="30" fill="#1f2328" font-weight="650" text-anchor="start">3×</text>
+<text x="331.3" y="212.0" font-size="13" fill="#1f2328" font-weight="400" text-anchor="start">fewer benign skills flagged</text>
+<text x="331.3" y="227.0" font-size="12" fill="#59636e" font-weight="400" text-anchor="start" class="num">1.28% → 0.43% false flags</text>
+<rect x="582.7" y="136" width="257.3" height="98" rx="12" fill="#f6f8fa"/>
+<rect x="602.7" y="156" width="16" height="3" rx="1.5" fill="#2a78d6"/>
+<text x="602.7" y="192.0" font-size="30" fill="#1f2328" font-weight="650" text-anchor="start">3 s</text>
+<text x="602.7" y="212.0" font-size="13" fill="#1f2328" font-weight="400" text-anchor="start">to find it, with no new calls</text>
+<text x="602.7" y="227.0" font-size="12" fill="#59636e" font-weight="400" text-anchor="start" class="num">selection over the answer cache</text>
+<rect x="96" y="290" width="230.0" height="230" fill="#2a78d6" fill-opacity="0.07"/>
+<line x1="96" x2="832" y1="462.5" y2="462.5" stroke="#eef1f4"/>
+<text x="86.0" y="466.5" font-size="11" fill="#59636e" font-weight="400" text-anchor="end" class="num">25%</text>
+<line x1="96" x2="832" y1="405.0" y2="405.0" stroke="#eef1f4"/>
+<text x="86.0" y="409.0" font-size="11" fill="#59636e" font-weight="400" text-anchor="end" class="num">50%</text>
+<line x1="96" x2="832" y1="347.5" y2="347.5" stroke="#eef1f4"/>
+<text x="86.0" y="351.5" font-size="11" fill="#59636e" font-weight="400" text-anchor="end" class="num">75%</text>
+<line x1="96" x2="832" y1="290.0" y2="290.0" stroke="#eef1f4"/>
+<text x="86.0" y="294.0" font-size="11" fill="#59636e" font-weight="400" text-anchor="end" class="num">100%</text>
+<line x1="96" x2="832" y1="520" y2="520" stroke="#d1d9e0"/>
+<text x="96.0" y="540.0" font-size="11" fill="#59636e" font-weight="400" text-anchor="middle" class="num">0%</text>
+<text x="280.0" y="540.0" font-size="11" fill="#59636e" font-weight="400" text-anchor="middle" class="num">0.4%</text>
+<text x="464.0" y="540.0" font-size="11" fill="#59636e" font-weight="400" text-anchor="middle" class="num">0.8%</text>
+<text x="648.0" y="540.0" font-size="11" fill="#59636e" font-weight="400" text-anchor="middle" class="num">1.2%</text>
+<text x="832.0" y="540.0" font-size="11" fill="#59636e" font-weight="400" text-anchor="middle" class="num">1.6%</text>
+<line x1="326.0" x2="326.0" y1="290" y2="520" stroke="#2a78d6" stroke-opacity="0.45"/>
+<text x="334.0" y="306.0" font-size="11" fill="#59636e" font-weight="400" text-anchor="start">0.5% false-flag target</text>
+<text x="104.0" y="306.0" font-size="11" fill="#59636e" font-weight="600" text-anchor="start">↖ better</text>
+<text x="96.0" y="276.0" font-size="12" fill="#59636e" font-weight="600" text-anchor="start">Malicious skills caught</text>
+<text x="832.0" y="566.0" font-size="12" fill="#59636e" font-weight="600" text-anchor="end">Benign skills falsely flagged →</text>
+<defs><marker id="head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1,1 L9,5 L1,9" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<path d="M674.8,457.3 Q454.8,459.3 302.8,340.0" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linecap="round" marker-end="url(#head)"/>
+<text x="559.8" y="482.0" font-size="12" fill="#59636e" font-weight="400" text-anchor="middle">optimize: 3 s of selection, no new calls</text>
+<circle cx="390.4" cy="336.9" r="5" fill="#898781" stroke="#ffffff" stroke-width="2"/>
+<text x="402.4" y="358.9" font-size="13" fill="#1f2328" font-weight="600" text-anchor="start">Shipped by hand</text>
+<text x="402.4" y="375.9" font-size="12" fill="#59636e" font-weight="400" text-anchor="start" class="num">79.6% at 0.64%</text>
+<circle cx="786.0" cy="319.7" r="5" fill="#ffffff" stroke="#898781" stroke-width="2"/>
+<text x="774.0" y="316.7" font-size="13" fill="#1f2328" font-weight="600" text-anchor="end">Greedy union: refused</text>
+<text x="774.0" y="333.7" font-size="12" fill="#59636e" font-weight="400" text-anchor="end" class="num">87.1%, but 1.50% flagged</text>
+<circle cx="684.8" cy="453.3" r="5" fill="#898781" stroke="#ffffff" stroke-width="2"/>
+<text x="696.8" y="450.3" font-size="13" fill="#1f2328" font-weight="600" text-anchor="start">Released judge</text>
+<text x="696.8" y="467.3" font-size="12" fill="#59636e" font-weight="400" text-anchor="start" class="num">29.0% at 1.28%</text>
+<circle cx="293.8" cy="327.0" r="13" fill="#2a78d6" fill-opacity="0.16"/>
+<circle cx="293.8" cy="327.0" r="6.5" fill="#2a78d6" stroke="#ffffff" stroke-width="2"/>
+<text x="275.8" y="324.0" font-size="13" fill="#1f2328" font-weight="650" text-anchor="end">skill-factory optimize</text>
+<text x="275.8" y="341.0" font-size="12" fill="#59636e" font-weight="400" text-anchor="end" class="num">83.9% at 0.43%</text>
+</svg>

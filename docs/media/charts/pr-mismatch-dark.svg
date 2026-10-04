@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="266" viewBox="0 0 880 266" role="img" aria-labelledby="t d" font-family='-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif'>
+<title id="t">pr-mismatch live results</title>
+<desc id="d">pr-mismatch live run: 3 of 3 hidden changes caught and 0 of 9 honest PRs flagged on the sealed test split, for $0.0025 in 3 seconds.</desc>
+<style>.num{font-variant-numeric:tabular-nums}</style>
+<rect x="0.5" y="0.5" width="879" height="265" rx="16" fill="#0d1117" stroke="#3d444d"/>
+<text x="40.0" y="50.0" font-size="11" fill="#9198a1" font-weight="600" text-anchor="start" letter-spacing="1.2">LIVE · EXAMPLES/PR-MISMATCH ON JEV-1.13.0</text>
+<text x="40.0" y="84.0" font-size="24" fill="#f0f6fc" font-weight="650" text-anchor="start">Catching pull requests that hide what they change</text>
+<text x="40.0" y="110.0" font-size="14" fill="#9198a1" font-weight="400" text-anchor="start">One question selected from the pool; sealed test split opened once, after freeze.</text>
+<rect x="40.0" y="136" width="189.5" height="98" rx="12" fill="#151b23"/>
+<rect x="60.0" y="156" width="16" height="3" rx="1.5" fill="#3987e5"/>
+<text x="60.0" y="192.0" font-size="30" fill="#f0f6fc" font-weight="650" text-anchor="start">3 / 3</text>
+<text x="60.0" y="212.0" font-size="13" fill="#f0f6fc" font-weight="400" text-anchor="start">hidden changes caught</text>
+<text x="60.0" y="227.0" font-size="12" fill="#9198a1" font-weight="400" text-anchor="start" class="num">sealed test split</text>
+<rect x="243.5" y="136" width="189.5" height="98" rx="12" fill="#151b23"/>
+<rect x="263.5" y="156" width="16" height="3" rx="1.5" fill="#3987e5"/>
+<text x="263.5" y="192.0" font-size="30" fill="#f0f6fc" font-weight="650" text-anchor="start">0 / 9</text>
+<text x="263.5" y="212.0" font-size="13" fill="#f0f6fc" font-weight="400" text-anchor="start">honest PRs flagged</text>
+<text x="263.5" y="227.0" font-size="12" fill="#9198a1" font-weight="400" text-anchor="start" class="num">sealed test split</text>
+<rect x="447.0" y="136" width="189.5" height="98" rx="12" fill="#151b23"/>
+<rect x="467.0" y="156" width="16" height="3" rx="1.5" fill="#3987e5"/>
+<text x="467.0" y="192.0" font-size="30" fill="#f0f6fc" font-weight="650" text-anchor="start">$0.0025</text>
+<text x="467.0" y="212.0" font-size="13" fill="#f0f6fc" font-weight="400" text-anchor="start">System One spend</text>
+<text x="467.0" y="227.0" font-size="12" fill="#9198a1" font-weight="400" text-anchor="start" class="num">32 requests, 60,700 tokens</text>
+<rect x="650.5" y="136" width="189.5" height="98" rx="12" fill="#151b23"/>
+<rect x="670.5" y="156" width="16" height="3" rx="1.5" fill="#3987e5"/>
+<text x="670.5" y="192.0" font-size="30" fill="#f0f6fc" font-weight="650" text-anchor="start">3 s</text>
+<text x="670.5" y="212.0" font-size="13" fill="#f0f6fc" font-weight="400" text-anchor="start">end-to-end optimize</text>
+<text x="670.5" y="227.0" font-size="12" fill="#9198a1" font-weight="400" text-anchor="start" class="num">0% → 80% validation recall</text>
+</svg>
