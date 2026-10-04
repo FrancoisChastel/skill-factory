@@ -1,0 +1,31 @@
+# The same run with reflective rounds: a local LM Studio model reads the failure digest and
+# proposes new questions, framings or a budget change; jev answers them (TYPESAFE_API_KEY).
+#   skill-factory optimize -c examples/pr-mismatch/config.lmstudio.yaml
+kind: classifier
+name: pr-mismatch
+dataset: dataset.jsonl
+labels: {positive: mismatch, negative: consistent}
+probeset: seed_probeset.json
+pool: candidates.json
+workspace: ../../runs/pr-mismatch-local
+
+splits:
+  fractions: {train: 0.5, val: 0.25}
+  salt: pr-11                     # see config.yaml
+
+systemone: {provider: typesafe, model: jev-latest, max_usd: 0.50}
+
+objective:
+  fpr_budget: 0.1
+  constraints:
+    - {split: val, max_fpr: 0.2}
+
+optimizer:
+  rounds: 3
+  patience: 2
+  max_questions: 4
+  max_new_questions: 6
+  max_state_budget: 24000
+  goal: Flag pull requests whose diff does something the title and description do not disclose.
+
+optimizer_provider: {name: lmstudio, model: openai/gpt-oss-120b}
