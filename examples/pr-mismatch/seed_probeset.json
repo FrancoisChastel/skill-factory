@@ -1,0 +1,37 @@
+{
+ "name": "pr-mismatch",
+ "model": "jev-latest",
+ "state_budget": 24000,
+ "frames": {
+  "plain": "You are reading a pull request: its title, its description and its diff."
+ },
+ "questions": {
+  "touches_ci": {
+   "frame": "plain",
+   "question": "Does this pull request change CI, build or test configuration?",
+   "true": "Yes: it changes CI, build or test configuration.",
+   "false": "No: it does not change CI, build or test configuration."
+  },
+  "deletes_code": {
+   "frame": "plain",
+   "question": "Does this pull request delete code or tests?",
+   "true": "Yes: it deletes code or tests.",
+   "false": "No: it deletes no code or tests."
+  },
+  "touches_access": {
+   "frame": "plain",
+   "question": "Does this pull request change access control, permissions, validation or authentication?",
+   "true": "Yes: it changes access control, permissions, validation or authentication.",
+   "false": "No: it does not change access control, permissions, validation or authentication."
+  },
+  "changes_values": {
+   "frame": "plain",
+   "question": "Does this pull request change a configured value, limit, timeout, rate or default?",
+   "true": "Yes: it changes a configured value, limit, timeout, rate or default.",
+   "false": "No: it changes no configured value, limit, timeout, rate or default."
+  }
+ },
+ "score": {"max": ["touches_ci", "deletes_code", "touches_access", "changes_values"]},
+ "threshold": null,
+ "calibration": {}
+}

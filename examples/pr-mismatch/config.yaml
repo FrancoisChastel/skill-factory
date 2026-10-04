@@ -1,0 +1,39 @@
+# Classifier mode: tune the questions, score and threshold a decision model (jev) uses to flag
+# pull requests whose diff does something the title and description do not disclose.
+#
+#   skill-factory optimize -c examples/pr-mismatch/config.yaml     # needs TYPESAFE_API_KEY
+#   skill-factory lab freeze -c examples/pr-mismatch/config.yaml
+#   skill-factory lab report -c examples/pr-mismatch/config.yaml --ask
+kind: classifier
+name: pr-mismatch
+dataset: dataset.jsonl
+labels: {positive: mismatch, negative: consistent}
+probeset: seed_probeset.json      # four capability questions: what a PR touches
+pool: candidates.json             # mismatch questions, each under two framings
+workspace: ../../runs/pr-mismatch
+
+splits:
+  fractions: {train: 0.5, val: 0.25}
+  # 16 template groups are too few for a random group split to put both classes in every
+  # split; this salt was chosen on label counts alone, before any question was asked.
+  salt: pr-11
+
+systemone:
+  provider: typesafe              # or openrouter, vercel, cloudflare, ollama, custom
+  model: jev-latest
+  max_usd: 0.50                   # the lab stops sending before this
+
+objective:
+  fpr_budget: 0.1                 # 12 training negatives: one false flag is 8%
+  constraints:
+    - {split: val, max_fpr: 0.2}
+
+optimizer:
+  rounds: 2
+  patience: 1
+  max_questions: 4
+  max_new_questions: 6
+  goal: Flag pull requests whose diff does something the title and description do not disclose.
+
+# Uncomment to let an LLM propose new questions and framings between rounds:
+# optimizer_provider: {name: anthropic, model: claude-opus-5-5}

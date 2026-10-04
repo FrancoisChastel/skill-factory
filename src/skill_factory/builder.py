@@ -84,6 +84,8 @@ def build_metric(metric_cfg: dict[str, Any], judge_client: LLMClient | None) -> 
         if judge_client is None:
             raise ValueError("metric.judge is configured but no judge client was built")
         components.append(_build_judge(metric_cfg["judge"], judge_client))
+    if "systemone" in metric_cfg:
+        components.append(_build_systemone(metric_cfg["systemone"]))
 
     if not components:
         # Sensible default: normalized golden match.
@@ -192,6 +194,37 @@ def _build_check(entry: Any):
             return factory(**args)
         return factory(args)
     raise ValueError(f"invalid check spec: {entry!r}")
+
+
+def _build_systemone(cfg: dict[str, Any]) -> WeightedMetric:
+    """Yes/no checks answered by a System One decision model (jev); see metrics/systemone.py."""
+    from skill_factory.classifier.cache import AnswerCache
+    from skill_factory.classifier.workspace import build_systemone
+    from skill_factory.metrics.systemone import Check, SystemOneMetric
+
+    checks = [
+        Check(
+            name=str(c["name"]),
+            question=str(c["question"]),
+            true=str(c.get("true") or f"Yes: {c['question']}"),
+            false=str(c.get("false") or f"No: {c['question']}"),
+            weight=float(c.get("weight", 1.0)),
+        )
+        for c in cfg.get("checks", [])
+    ]
+    if not checks:
+        raise ValueError("metric.systemone requires a non-empty 'checks' list")
+    client_cfg = {k: cfg[k] for k in ("provider", "model", "api_key", "base_url", "account_id", "timeout")
+                  if k in cfg}
+    threshold = cfg.get("threshold")
+    metric = SystemOneMetric(
+        build_systemone(client_cfg),
+        checks,
+        threshold=float(threshold) if threshold is not None else None,
+        include_expected=bool(cfg.get("include_expected", False)),
+        cache=AnswerCache(cfg["cache"]) if cfg.get("cache") else None,
+    )
+    return WeightedMetric(metric, weight=_weight(cfg))
 
 
 def _build_judge(cfg: dict[str, Any], client: LLMClient) -> WeightedMetric:

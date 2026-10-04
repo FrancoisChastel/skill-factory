@@ -35,6 +35,10 @@ def _build_parser() -> argparse.ArgumentParser:
     p_opt.add_argument("--out", "-o", default=None, help="Output dir (default: config output.dir).")
     p_opt.add_argument("--emit", default=None, help="Also export best skill to this dir (npx skills layout).")
     p_opt.add_argument("--collection", action="store_true", help="Emit under skills/<slug>/.")
+    p_opt.add_argument(
+        "--kind", choices=("skill", "classifier"), default=None,
+        help="What to optimize: a SKILL.md (skill) or a probe set (classifier). Default: the config's 'kind'.",
+    )
     p_opt.set_defaults(handler=_cmd_optimize)
 
     p_eval = sub.add_parser("evaluate", help="Evaluate a skill on a dataset (no optimization).")
@@ -57,10 +61,19 @@ def _build_parser() -> argparse.ArgumentParser:
     p_list = sub.add_parser("list", help="List registered optimizers and providers.")
     p_list.set_defaults(handler=_cmd_list)
 
+    from skill_factory.classifier.cli import register as register_lab
+
+    register_lab(sub)
+
     return parser
 
 
 def _cmd_optimize(args: argparse.Namespace) -> int:
+    from skill_factory.classifier.config import is_classifier_config
+
+    kind = args.kind or ("classifier" if is_classifier_config(args.config) else "skill")
+    if kind == "classifier":
+        return _cmd_optimize_classifier(args)
     from skill_factory.builder import run_optimization
     from skill_factory.config import load_config
     from skill_factory.export import export_skill, install_hint
@@ -83,6 +96,30 @@ def _cmd_optimize(args: argparse.Namespace) -> int:
         as_collection = args.collection or bool(config.output.get("as_collection", False))
         export_result = export_skill(result.best_skill, emit_dir, as_collection=as_collection)
         print(install_hint(export_result))
+    return 0
+
+
+def _cmd_optimize_classifier(args: argparse.Namespace) -> int:
+    from dataclasses import replace
+
+    from skill_factory.classifier.config import load_classifier_config
+    from skill_factory.classifier.workspace import run_classifier
+
+    config = load_classifier_config(args.config)
+    if args.out:
+        config = replace(config, workspace=Path(args.out))
+    print(f"Optimizing probe set {config.name} (classifier mode)…")
+    result, ws = run_classifier(config)
+    obj = result.objective
+    print(f"{obj.split} recall at {obj.fpr_budget:.2%} false positives: "
+          f"{result.baseline_score:.1%} → {result.best_score:.1%}; spent ${result.usd:.4f}")
+    print(f"Artifacts: {ws.dir} (probeset.json, report.md, splits.svg)")
+    print("Test and held-out stay sealed: `skill-factory lab freeze` then `skill-factory lab report`.")
+    if result.failed_requests:
+        print(f"WARNING: {result.failed_requests} System One requests failed; their examples counted as "
+              f"misses (see report.md). First error: {result.errors[0] if result.errors else 'unknown'}",
+              file=sys.stderr)
+        return 3
     return 0
 
 
