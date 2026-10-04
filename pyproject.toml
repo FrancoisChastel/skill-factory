@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "skill-factory"
-version = "0.1.0"
+version = "0.2.0"
 description = "Scientifically optimize portable agent skills (SKILL.md) across harnesses using pluggable optimizers (custom loop, DSPy/GEPA, Microsoft SkillOpt)."
 readme = "README.md"
 requires-python = ">=3.10"
